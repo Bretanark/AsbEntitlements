@@ -1,0 +1,59 @@
+# Build output
+[Bb]in/
+[Oo]bj/
+out/
+artifacts/
+.verify-build/
+
+# User-specific IDE and editor files
+.vs/
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.rsuser
+*.DotSettings.user
+
+# Visual Studio temporary files
+TestResults/
+*.VisualState.xml
+*.ncrunch*
+_NCrunch_*
+*.vsp
+*.vspx
+*.coverage
+*.coveragexml
+
+# .NET and NuGet
+project.lock.json
+project.assets.json
+packages/
+*.nupkg
+*.snupkg
+*.nuget.props
+*.nuget.targets
+
+# Logs and diagnostics
+*.log
+logs/
+*.dmp
+*.mdmp
+*.pid
+
+# OS files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+
+# Local environment files
+.env
+.env.*
+!.env.example
+appsettings.Local.json
+appsettings.*.Local.json
+
+# Docker and tooling overrides
+docker-compose.override.yml
