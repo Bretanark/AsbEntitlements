@@ -1,4 +1,4 @@
-﻿namespace Entitlements.Tests;
+namespace Entitlements.Tests;
 
 public class UnitTest1
 {

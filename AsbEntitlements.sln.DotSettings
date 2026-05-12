@@ -1,0 +1,8 @@
+<wpf:ResourceDictionary
+    xml:space="preserve"
+    xmlns:s="clr-namespace:System;assembly=mscorlib"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+    <s:String x:Key="/Default/CodeStyle/Naming/CSharpNaming/Abbreviations/=Neo4j/@EntryIndexedValue">Neo4j</s:String>
+    <s:Boolean x:Key="/Default/UserDictionary/Words/=Neo4j/@EntryIndexedValue">True</s:Boolean>
+</wpf:ResourceDictionary>
