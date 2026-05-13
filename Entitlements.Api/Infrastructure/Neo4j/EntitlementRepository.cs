@@ -10,11 +10,8 @@ public sealed class EntitlementRepository(IDriver driver, IOptions<Neo4jSettings
 {
     private readonly Neo4jSettings _settings = options.Value;
 
-    public async Task<EntitlementCheckResult?> CheckEntitlementAsync(
-        string subjectId,
-        string permissionName,
-        string resourceId,
-        CancellationToken cancellationToken = default)
+    public async Task<EntitlementCheckResult?> CheckEntitlementAsync
+        (string subjectId, string permissionName, string resourceId, CancellationToken cancellationToken = default)
     {
         const string cypher = """
             MATCH (party:Party {partyId: $subjectId})
@@ -38,8 +35,7 @@ public sealed class EntitlementRepository(IDriver driver, IOptions<Neo4jSettings
             ? driver.AsyncSession(o => o.WithDefaultAccessMode(AccessMode.Read).WithDatabase(_settings.Database))
             : driver.AsyncSession(o => o.WithDefaultAccessMode(AccessMode.Read));
 
-        var record = await session.ExecuteReadAsync(
-            async tx =>
+        var record = await session.ExecuteReadAsync(async tx =>
             {
                 var cursor = await tx.RunAsync(cypher, parameters);
 
@@ -56,4 +52,5 @@ public sealed class EntitlementRepository(IDriver driver, IOptions<Neo4jSettings
 
         return new EntitlementCheckResult(true, reason, permissionName);
     }
+
 }

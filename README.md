@@ -94,6 +94,7 @@ Install:
 
 - .NET 10 SDK
 - Docker Desktop or another Docker runtime
+- ReSharper for coding standards "ReSharper-green"
 
 Start Neo4j:
 
@@ -177,5 +178,6 @@ dotnet test Entitlements.Tests/Entitlements.Tests.csproj -o .verify-tests
 This implementation intentionally avoids CQRS, MediatR, generic repositories, authentication middleware, and pre-built authorisation libraries. The point of the exercise is the entitlement graph model and traversal, not framework wiring.
 
 I used ChatGPT while building this because I was unfamiliar with Neo4j and the entitlement domain. The generated guidance was used as a development aid, with the code, tests, and README intended to make the final design understandable and runnable.
+Along the way, I added coding standards to `CONTRIBUTING.md` to guide Codex in my style and make it easier for others to understand the style and setup.  A few standards have been added to the dotsettings file to ensure a ReSharper-green standard.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) for coding standards and local contribution notes.

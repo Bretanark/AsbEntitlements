@@ -12,6 +12,7 @@ namespace Entitlements.Tests;
 public sealed class EntitlementCheckEndpointTests(EntitlementApiFixture fixture)
     : IClassFixture<EntitlementApiFixture>
 {
+
     [Fact]
     public async Task Check_ReturnsAllowed_WhenEntitlementIsGranted()
     {
@@ -71,6 +72,7 @@ public sealed class EntitlementCheckEndpointTests(EntitlementApiFixture fixture)
         result.Reason.Should().Be("No matching entitlement found.");
         result.GrantedPermission.Should().BeNull();
     }
+
 }
 
 
@@ -87,18 +89,14 @@ public sealed class EntitlementApiFixture
         await _container.StartAsync();
 
         _factory = new EntitlementApiFactory(_container);
-        Client = _factory.CreateClient(new WebApplicationFactoryClientOptions
-        {
-            BaseAddress = new Uri("https://localhost")
-        });
+        Client = _factory.CreateClient(new WebApplicationFactoryClientOptions { BaseAddress = new Uri("https://localhost") });
     }
 
     public async Task DisposeAsync()
     {
         Client.Dispose();
 
-        if (_factory is not null)
-            await _factory.DisposeAsync();
+        if (_factory is not null) await _factory.DisposeAsync();
 
         await _container.DisposeAsync();
     }
