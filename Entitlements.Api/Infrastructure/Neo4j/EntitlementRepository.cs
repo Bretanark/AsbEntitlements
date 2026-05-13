@@ -10,22 +10,29 @@ public sealed class EntitlementRepository(IDriver driver, IOptions<Neo4jSettings
 {
     private readonly Neo4jSettings _settings = options.Value;
 
-    public async Task<EntitlementCheckResult?> CheckEntitlementAsync
-        (string subjectId, string permissionName, string resourceId, CancellationToken cancellationToken = default)
+    public async Task<EntitlementCheckResult?> CheckEntitlementAsync(
+        string subjectId,
+        string permissionName,
+        string resourceId,
+        CancellationToken cancellationToken = default)
     {
         const string cypher = """
-            MATCH (party:Party {id: $subjectId})
-                --> (role:PartyRole)
-                --> (entitlement:Entitlement)
-                --> (permission:Permission {name: $permissionName})
-                --> (resource:Resource {id: $resourceId})
+            MATCH (party:Party {partyId: $subjectId})
+                -[:HOLDS_ROLE]->(role:PartyRole)
+                -[:HAS_ENTITLEMENT]->(entitlement:Entitlement)
+                -[:GRANTS_PERMISSION]->(permission:Permission {name: $permissionName})
+                -[:APPLIES_TO]->(resource:Resource {resourceId: $resourceId})
             RETURN
-                coalesce(entitlement.id, entitlement.name) AS entitlementId,
-                entitlement.name AS entitlementName
+                role.name AS roleName
             LIMIT 1
             """;
 
-        var parameters = new { subjectId, permissionName, resourceId };
+        var parameters = new
+        {
+            subjectId,
+            permissionName,
+            resourceId
+        };
 
         await using var session = _settings.Database is { Length: > 0 }
             ? driver.AsyncSession(o => o.WithDefaultAccessMode(AccessMode.Read).WithDatabase(_settings.Database))
@@ -44,11 +51,9 @@ public sealed class EntitlementRepository(IDriver driver, IOptions<Neo4jSettings
 
         if (record is null) return null;
 
-        var entitlementId = record["entitlementId"].As<string?>();
-        var entitlementName = record["entitlementName"].As<string?>();
-        var matchedEntitlement = entitlementName ?? entitlementId ?? "Entitlement";
+        var roleName = record["roleName"].As<string>();
+        var reason = $"Permission '{permissionName}' granted via role '{roleName}'.";
 
-        return new EntitlementCheckResult(true, "Matching entitlement found.", [matchedEntitlement]);
+        return new EntitlementCheckResult(true, reason, permissionName);
     }
-
 }
