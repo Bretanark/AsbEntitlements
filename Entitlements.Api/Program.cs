@@ -1,4 +1,5 @@
 using Entitlements.Api.Infrastructure.Neo4j;
+using Entitlements.Api.Seed;
 using Entitlements.Api.Services;
 using Microsoft.Extensions.Options;
 using Neo4j.Driver;
@@ -18,6 +19,7 @@ builder.Services.AddSingleton<IDriver>(serviceProvider =>
         AuthTokens.Basic(settings.Username, settings.Password));
 });
 builder.Services.AddScoped<IEntitlementRepository, EntitlementRepository>();
+builder.Services.AddSingleton<DemoDataSeeder>();
 
 var app = builder.Build();
 
@@ -25,6 +27,9 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+
+    var seeder = app.Services.GetRequiredService<DemoDataSeeder>();
+    await seeder.SeedAsync();
 }
 
 app.UseHttpsRedirection();
