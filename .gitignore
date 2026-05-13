@@ -4,6 +4,7 @@
 out/
 artifacts/
 .verify-build/
+.verify-tests/
 
 # User-specific IDE and editor files
 .vs/
